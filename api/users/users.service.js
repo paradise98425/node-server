@@ -2,6 +2,7 @@ const pool = require("../../database/config");
 
 
 module.exports = {
+    // registration  
     create: (data, callBack) => {
         data.login_status = true
         data.profile_picture = "no picture"
@@ -22,5 +23,17 @@ module.exports = {
               return callBack(null, results);
             }
           );
+    },
+    getUserByUserEmail: (email, callBack) => {
+      pool.query(
+        `select * from users where email = ?`,
+        [email],
+        (error, results, fields) => {
+          if(error) {
+            callBack(error);
+          }
+          return callBack(null, results[0]);
+        }
+      );
     }
 }
