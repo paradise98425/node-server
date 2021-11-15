@@ -1,11 +1,16 @@
-const { create, getUserByUserEmail } = require("./users.service");
+
+const { create, getUserByUserEmail, saveFile } = require("./users.service");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 
+
 module.exports = {
+    //create user
     createUser: (req, res) => {
         const body = req.body;
+        // password encryption
         const salt = genSaltSync(10);
-        body.password = hashSync(body.password, salt)
+        body.password = hashSync(body.password, salt);
+
         create(body, (err, results) => {
             if (err) {
                 console.log(err);
@@ -47,6 +52,27 @@ module.exports = {
                 });
             }
         });
+    },
+    // Upload profile picture
+    uploadProfilePicture: (req, res) => {
+        const body = req.file;
+        saveFile(body, (err, results) => {
+            if(err) {
+                console.log("point A", err);
+            }
+            if(!results) {
+                return res.json({
+                    success: 0,
+                    message: "user does not exist"
+                })
+            }
+            if(results) {
+                return res.json({
+                    success: 1,
+                    message: "profile picture uploaded"
+                })
+            }
+        })
     }
 }
 

@@ -35,5 +35,21 @@ module.exports = {
           return callBack(null, results[0]);
         }
       );
+    },
+    saveFile: (data, callBack) => {
+      data.email="pankaj@gmail.com"
+      pool.query(
+        `update users set profile_picture=? where email=?`,
+        [
+          data.path,
+          data.email
+        ],
+        (error, results, fields) => {
+          if(error) {
+            callBack(error);
+          }
+          return callBack(null, results);
+        }
+      )
     }
 }
