@@ -4,6 +4,8 @@ const cors = require('cors');
 const app = express();
 const userRouter = require("./api/users/users.router");
 
+
+
 const allowedOrigins = [
     'capacitor://localhost',
     'ionic://localhost',

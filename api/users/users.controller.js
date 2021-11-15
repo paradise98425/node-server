@@ -1,6 +1,7 @@
 
 const { create, getUserByUserEmail, saveFile } = require("./users.service");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
+const path = require('path');
 
 
 module.exports = {
@@ -73,6 +74,10 @@ module.exports = {
                 })
             }
         })
+    },
+    // send profile picture back
+    sendProfilePicture: (req, res) => {
+        res.sendFile(__dirname + '/uploads/' + 'profile-pic.jpg');
     }
 }
 

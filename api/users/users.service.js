@@ -37,7 +37,7 @@ module.exports = {
       );
     },
     saveFile: (data, callBack) => {
-      data.email="pankaj@gmail.com"
+      data.email="sample@gmail.com"
       pool.query(
         `update users set profile_picture=? where email=?`,
         [
