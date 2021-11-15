@@ -1,5 +1,5 @@
 
-const { create, getUserByUserEmail, saveFile } = require("./users.service");
+const { create, getUserByUserEmail, saveFile, getPictureByEmail } = require("./users.service");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const path = require('path');
 
@@ -56,8 +56,9 @@ module.exports = {
     },
     // Upload profile picture
     uploadProfilePicture: (req, res) => {
-        const body = req.file;
-        saveFile(body, (err, results) => {
+        var body = req.file;
+        body.email = req.body.email;
+        saveFile((body), (err, results) => {
             if(err) {
                 console.log("point A", err);
             }
@@ -77,7 +78,29 @@ module.exports = {
     },
     // send profile picture back
     sendProfilePicture: (req, res) => {
-        res.sendFile(__dirname + '/uploads/' + 'profile-pic.jpg');
+        const body = req.headers;
+        getUserByUserEmail(body.email, (err, results) => {
+            if(err) {
+                console.log(err);
+            }
+            if(!results) {
+                return res.json({
+                    success: 0,
+                    message: "user not found"
+                })
+            }
+            if(results){
+                var filename = results.profile_picture.substring(results.profile_picture.lastIndexOf('/')+1);
+                res.sendFile(__dirname + '/uploads/' + filename);
+            }
+            else {
+                return res.json({
+                    success: 0,
+                    data: "something went wrong"
+                });
+            }
+        });
+        //res.sendFile(__dirname + '/uploads/' + results.profile_picture);
     }
 }
 

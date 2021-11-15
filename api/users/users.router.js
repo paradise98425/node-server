@@ -10,5 +10,4 @@ router.post("/login", login);
 router.put("/upload", upload.single("profile_picture"), uploadProfilePicture);
 router.get("/profile-picture", sendProfilePicture);
 
-
 module.exports = router;

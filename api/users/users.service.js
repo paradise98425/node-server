@@ -5,7 +5,7 @@ module.exports = {
     // registration  
     create: (data, callBack) => {
         data.login_status = true
-        data.profile_picture = "no picture"
+        data.profile_picture = "api/users/uploads/pp.png"
         pool.query(
             `insert into users(username, password, email, login_status, profile_picture) 
                       values(?,?,?,?,?)`,
@@ -37,7 +37,6 @@ module.exports = {
       );
     },
     saveFile: (data, callBack) => {
-      data.email="sample@gmail.com"
       pool.query(
         `update users set profile_picture=? where email=?`,
         [
