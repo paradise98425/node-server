@@ -22,8 +22,27 @@ module.exports = {
               }
               return callBack(null, results);
             }
-          );
+          ); 
     },
+    //insert new badge for user
+    createBadge: (email, callBack) => {
+      pool.query(
+        `insert into badges(badge_name, badge_type, badge_image, location_id, email) 
+          values("registration-badge","basic","api/users/uploads/basic-badge.png","1",?)`,
+        [
+          email
+        ],
+        (error, results2, fields) => {
+          if(error) {
+            console.log("badge insertion error", error)
+          }
+          else {
+            console.log("badge insertion success", results2);
+          }
+        }
+      );
+    },
+
     getUserByUserEmail: (email, callBack) => {
       pool.query(
         `select * from users where email = ?`,
@@ -36,6 +55,20 @@ module.exports = {
         }
       );
     },
+
+    getBadgesByUserEmail: (email, callBack) => {
+      pool.query(
+        `select * from badges where email = ?`,
+        [email],
+        (error, results, fields) => {
+          if(error) {
+            callBack(error);
+          }
+          return callBack(null, results[0]);
+        }
+      );
+    },
+
     saveFile: (data, callBack) => {
       pool.query(
         `update users set profile_picture=? where email=?`,

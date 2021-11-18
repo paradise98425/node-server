@@ -1,5 +1,5 @@
 
-const { create, getUserByUserEmail, saveFile, getPictureByEmail } = require("./users.service");
+const { create, getUserByUserEmail, saveFile, getPictureByEmail, createBadge, getBadgesByUserEmail } = require("./users.service");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const path = require('path');
 
@@ -11,6 +11,15 @@ module.exports = {
         // password encryption
         const salt = genSaltSync(10);
         body.password = hashSync(body.password, salt);
+
+        createBadge(body.email, (err, results) => {
+            if(err) {
+                console.log(err);
+            }
+            else {
+                console.log(results);
+            }
+        })
 
         create(body, (err, results) => {
             if (err) {
@@ -101,6 +110,58 @@ module.exports = {
             }
         });
         //res.sendFile(__dirname + '/uploads/' + results.profile_picture);
-    }
+    },
+    // send badges of user
+    sendUserBadges: (req, res) => {
+        const body = req.headers;
+        getBadgesByUserEmail(body.email, (err, results) => {
+            if(err) {
+                console.log(err);
+            }
+            if(!results) {
+                return res.json({
+                    success: 0,
+                    message: "user not found"
+                })
+            }
+            if(results){
+                var filename = results.badge_image.substring(results.badge_image.lastIndexOf('/')+1);
+                res.sendFile(__dirname + '/uploads/' + filename);
+            }
+            else {
+                return res.json({
+                    success: 0,
+                    data: "something went wrong"
+                });
+            }
+        });
+    },
+    // send profile picture back
+    userDetails: (req, res) => {
+        const body = req.headers;
+        getUserByUserEmail(body.email, (err, results) => {
+            if(err) {
+                console.log(err);
+            }
+            if(!results) {
+                return res.json({
+                    success: 0,
+                    message: "user not found"
+                })
+            }
+            if(results){
+                return res.json({
+                    success: 1,
+                    username: results.username
+                })
+            }
+            else {
+                return res.json({
+                    success: 0,
+                    data: "something went wrong"
+                });
+            }
+        });
+    },
 }
 
