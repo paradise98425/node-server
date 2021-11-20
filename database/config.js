@@ -1,11 +1,11 @@
 const { createPool } = require("mysql");
 
 const pool = createPool({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: "password",
-    database: "go_explore",
+    host: process.env.HOST,
+    port: process.env.APP_PORT,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
     connectionLimit: 10
 });
 
