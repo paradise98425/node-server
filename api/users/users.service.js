@@ -73,7 +73,7 @@ module.exports = {
       pool.query(
         `update users set profile_picture=? where email=?`,
         [
-          data.path,
+          data.filename,
           data.email
         ],
         (error, results, fields) => {
