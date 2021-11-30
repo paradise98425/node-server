@@ -2,6 +2,7 @@
 const { create, getUserByUserEmail, saveFile, getPictureByEmail, createBadge, getBadgesByUserEmail } = require("./users.service");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const path = require('path');
+const fs = require('fs');
 
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
         body.password = hashSync(body.password, salt);
 
         createBadge(body.email, (err, results) => {
-            if(err) {
+            if (err) {
                 console.log(err);
             }
             else {
@@ -39,17 +40,17 @@ module.exports = {
     login: (req, res) => {
         const body = req.body;
         getUserByUserEmail(body.email, (err, results) => {
-            if(err) {
+            if (err) {
                 console.log(err);
             }
-            if(!results) {
+            if (!results) {
                 return res.json({
                     success: 0,
                     message: "Invalid email or password"
                 })
             }
             const result = compareSync(body.password, results.password);
-            if(result){
+            if (result) {
                 return res.json({
                     success: 1,
                     message: "login successfully"
@@ -68,16 +69,16 @@ module.exports = {
         var body = req.file;
         body.email = req.body.email;
         saveFile((body), (err, results) => {
-            if(err) {
+            if (err) {
                 console.log("point A", err);
             }
-            if(!results) {
+            if (!results) {
                 return res.json({
                     success: 0,
                     message: "user does not exist"
                 })
             }
-            if(results) {
+            if (results) {
                 return res.json({
                     success: 1,
                     message: "profile picture uploaded"
@@ -89,18 +90,28 @@ module.exports = {
     sendProfilePicture: (req, res) => {
         const body = req.headers;
         getUserByUserEmail(body.email, (err, results) => {
-            if(err) {
+            if (err) {
                 console.log(err);
             }
-            if(!results) {
+            if (!results) {
                 return res.json({
                     success: 0,
                     message: "user not found"
                 })
             }
-            if(results){
-                var filename = results.profile_picture.substring(results.profile_picture.lastIndexOf('/')+1);
-                res.sendFile(__dirname + '/uploads/' + filename);
+            if (results) {
+                var filename = results.profile_picture.substring(results.profile_picture.lastIndexOf('/') + 1);
+                var fullPath = `${__dirname}/uploads/${filename}`;
+
+                fs.stat(fullPath, function (err) {
+                    if (!err) {
+                        res.sendFile(fullPath);
+                    }
+                    else if (err.code === 'ENOENT') {
+                        res.sendFile(`${__dirname}/img/profile.png`);
+                    }
+                });
+
             }
             else {
                 return res.json({
@@ -115,18 +126,18 @@ module.exports = {
     sendUserBadges: (req, res) => {
         const body = req.headers;
         getBadgesByUserEmail(body.email, (err, results) => {
-            if(err) {
+            if (err) {
                 console.log(err);
             }
-            if(!results) {
+            if (!results) {
                 return res.json({
                     success: 0,
                     message: "user not found"
                 })
             }
-            if(results){
-                var filename = results.badge_image.substring(results.badge_image.lastIndexOf('/')+1);
-                res.sendFile(__dirname + '/uploads/' + filename);
+            if (results) {
+                var filename = results.badge_image.substring(results.badge_image.lastIndexOf('/') + 1);
+                res.sendFile(__dirname + '/img/' + filename);
             }
             else {
                 return res.json({
@@ -140,16 +151,16 @@ module.exports = {
     userDetails: (req, res) => {
         const body = req.headers;
         getUserByUserEmail(body.email, (err, results) => {
-            if(err) {
+            if (err) {
                 console.log(err);
             }
-            if(!results) {
+            if (!results) {
                 return res.json({
                     success: 0,
                     message: "user not found"
                 })
             }
-            if(results){
+            if (results) {
                 return res.json({
                     success: 1,
                     username: results.username
