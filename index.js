@@ -43,6 +43,7 @@ app.use("/api/users", userRouter);
 app.use('/static', express.static('public'))
 
 
-app.listen(process.env.APP_PORT, () => {
-  console.log("server is running on port:", process.env.APP_PORT)
+var port = process.env.APP_PORT || 3000;
+app.listen(port, () => {
+  console.log("server is running on port:", port)
 })
