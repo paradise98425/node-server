@@ -136,8 +136,10 @@ module.exports = {
                 })
             }
             if (results) {
-                var filename = results.badge_image.substring(results.badge_image.lastIndexOf('/') + 1);
-                res.sendFile(__dirname + '/img/' + filename);
+                return res.json({
+                    success: 1,
+                    data: results.map(badge => badge.badge_image)
+                });
             }
             else {
                 return res.json({
