@@ -138,7 +138,9 @@ module.exports = {
             if (results) {
                 return res.json({
                     success: 1,
-                    data: results.map(badge => badge.badge_image)
+                    data: {
+                        "badges": results.map(badge => badge.badge_image)
+                    }
                 });
             }
             else {
