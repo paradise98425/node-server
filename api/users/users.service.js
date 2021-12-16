@@ -53,7 +53,7 @@ module.exports = {
   },
   //insert new badge for user
   createBadge: (userId, callBack) => {
-    const basicBadgeImage = "frellsen_badge.png";
+    const basicBadgeImage = "signup_badge.png";
 
     pool.query(
       `insert into badges(badge_name, badge_type, badge_image) 
