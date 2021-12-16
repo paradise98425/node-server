@@ -24,29 +24,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `location`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `location` (
   `id` int(11) NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `login_status` tinyint(1) NOT NULL,
-  `profile_picture` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `registration_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `level` int(11) NOT NULL DEFAULT 0,
-  `point` int(11) NOT NULL DEFAULT 0
+  `location_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `location_address` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `latitude` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `longitude` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `location`
+--
+
+INSERT INTO `location` (`id`, `location_name`, `location_address`, `latitude`, `longitude`, `image`) VALUES
+(1, 'Frellsen Roskilde', 'roskilde', '1.22', '3.33', 'null'),
+(2, 'Handelsskole', 'roskilde', '4.22', '5.44', ''),
+(3, 'Himmerlev', 'roskilde', '3.11', '5.33', ''),
+(4, 'Htx', 'roskilde', '4.55', '6.22', '');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `users`
+-- Indexes for table `location`
 --
-ALTER TABLE `users`
+ALTER TABLE `location`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -54,10 +61,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `location`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `location`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

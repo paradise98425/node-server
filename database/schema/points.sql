@@ -24,40 +24,60 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `points`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `points` (
   `id` int(11) NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `login_status` tinyint(1) NOT NULL,
-  `profile_picture` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `registration_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `level` int(11) NOT NULL DEFAULT 0,
-  `point` int(11) NOT NULL DEFAULT 0
+  `point` int(11) NOT NULL,
+  `badge_id` int(11) NOT NULL,
+  `location_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `points`
+--
+
+INSERT INTO `points` (`id`, `point`, `badge_id`, `location_id`) VALUES
+(1, 50, 2, 1),
+(2, 30, 2, 2),
+(3, 70, 4, 4),
+(4, 20, 3, 3),
+(7, 30, 7, NULL),
+(8, 20, 6, NULL);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `users`
+-- Indexes for table `points`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `points`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `badge_id` (`badge_id`,`location_id`),
+  ADD KEY `fk_points_location_location_id` (`location_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `points`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `points`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `points`
+--
+ALTER TABLE `points`
+  ADD CONSTRAINT `fk_points_badge_badge_id` FOREIGN KEY (`badge_id`) REFERENCES `badges` (`id`),
+  ADD CONSTRAINT `fk_points_location_location_id` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

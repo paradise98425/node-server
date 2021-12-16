@@ -24,19 +24,13 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `user_achievements`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `user_achievements` (
   `id` int(11) NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `login_status` tinyint(1) NOT NULL,
-  `profile_picture` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `registration_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `level` int(11) NOT NULL DEFAULT 0,
-  `point` int(11) NOT NULL DEFAULT 0
+  `user_id` int(11) NOT NULL,
+  `point_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -44,20 +38,33 @@ CREATE TABLE `users` (
 --
 
 --
--- Indexes for table `users`
+-- Indexes for table `user_achievements`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `user_achievements`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`,`point_id`),
+  ADD KEY `fk_user_achievements_point_point_id` (`point_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `user_achievements`
 --
-ALTER TABLE `users`
+ALTER TABLE `user_achievements`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `user_achievements`
+--
+ALTER TABLE `user_achievements`
+  ADD CONSTRAINT `fk_user_achievements_point_point_id` FOREIGN KEY (`point_id`) REFERENCES `points` (`id`),
+  ADD CONSTRAINT `fk_user_achievements_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

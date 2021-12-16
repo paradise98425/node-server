@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2021 at 02:03 PM
+-- Generation Time: Dec 16, 2021 at 02:04 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.6
 
@@ -24,19 +24,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `visited_location`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `visited_location` (
   `id` int(11) NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `login_status` tinyint(1) NOT NULL,
-  `profile_picture` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `registration_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `level` int(11) NOT NULL DEFAULT 0,
-  `point` int(11) NOT NULL DEFAULT 0
+  `user_id` int(11) NOT NULL,
+  `location_id` int(11) NOT NULL,
+  `scanned_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -44,20 +39,33 @@ CREATE TABLE `users` (
 --
 
 --
--- Indexes for table `users`
+-- Indexes for table `visited_location`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `visited_location`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`,`location_id`),
+  ADD KEY `fk_visited_location_location_location_id` (`location_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `visited_location`
 --
-ALTER TABLE `users`
+ALTER TABLE `visited_location`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `visited_location`
+--
+ALTER TABLE `visited_location`
+  ADD CONSTRAINT `fk_visited_location_location_location_id` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`),
+  ADD CONSTRAINT `fk_visited_location_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

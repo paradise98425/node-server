@@ -24,40 +24,55 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `qr_setup`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `qr_setup` (
   `id` int(11) NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `login_status` tinyint(1) NOT NULL,
-  `profile_picture` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `registration_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `level` int(11) NOT NULL DEFAULT 0,
-  `point` int(11) NOT NULL DEFAULT 0
+  `qr_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `location_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `qr_setup`
+--
+
+INSERT INTO `qr_setup` (`id`, `qr_code`, `location_id`) VALUES
+(1, 'FRELLSEN', 1),
+(2, 'HANDELSSKOLE', 2),
+(3, 'HIMMERLEV', 3),
+(4, 'HTX', 4);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `users`
+-- Indexes for table `qr_setup`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `qr_setup`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_qr_setup_location_location_id` (`location_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `qr_setup`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `qr_setup`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `qr_setup`
+--
+ALTER TABLE `qr_setup`
+  ADD CONSTRAINT `fk_qr_setup_location_location_id` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
